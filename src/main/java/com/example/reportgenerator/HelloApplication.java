@@ -341,12 +341,12 @@ public class HelloApplication extends Application {
         repoLabel.setStyle("-fx-font-weight: bold;");
         
         // Crear un Hyperlink para el repositorio de GitHub
-        Hyperlink githubLink = new Hyperlink("https://github.com/usuario/ReportGenerator");
+        Hyperlink githubLink = new Hyperlink("https://github.com/alvarocrsc/ReportGenerator");
         githubLink.setOnAction(e -> {
             try {
                 // Intentar abrir el enlace en el navegador
                 java.awt.Desktop.getDesktop().browse(
-                    new java.net.URI("https://github.com/usuario/ReportGenerator")
+                    new java.net.URI("https://github.com/alvarocrsc/ReportGenerator")
                 );
             } catch (Exception ex) {
                 System.err.println("No se pudo abrir el enlace: " + ex.getMessage());

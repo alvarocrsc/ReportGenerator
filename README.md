@@ -49,7 +49,7 @@ Aplicación de escritorio desarrollada en JavaFX para la gestión de clientes co
 
 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/usuario/ReportGenerator.git
+git clone https://github.com/alvarocrsc/ReportGenerator.git
 cd ReportGenerator
 ```
 
@@ -157,8 +157,8 @@ ReportGenerator/
 ## Autor
 
 **Álvaro**
-- GitHub: [@usuario](https://github.com/usuario)
-- Proyecto: [ReportGenerator](https://github.com/usuario/ReportGenerator)
+- GitHub: [@alvarocrsc](https://github.com/alvarocrsc)
+- Proyecto: [ReportGenerator](https://github.com/alvarocrsc/ReportGenerator)
 
 ## Licencia
 
@@ -177,7 +177,7 @@ Las contribuciones son bienvenidas. Por favor:
 ## Soporte
 
 Si encuentras algún problema o tienes sugerencias:
-- Abre un [Issue](https://github.com/usuario/ReportGenerator/issues)
+- Abre un [Issue](https://github.com/alvarocrsc/ReportGenerator/issues)
 - Contacta al autor a través de GitHub
 
 ---
