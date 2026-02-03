@@ -37,11 +37,46 @@ Aplicación de escritorio desarrollada en JavaFX para la gestión de clientes co
 └──────────────────────────────┴──────────────────────────────────┘
 ```
 
-## Inicio Rápido
+## Descargar e Instalar
+
+### Instaladores Nativos (Recomendado)
+
+Descarga el instalador para tu sistema operativo desde [GitHub Releases](https://github.com/alvarocrsc/ReportGenerator/releases/latest):
+
+| Sistema | Instalador | Requisitos |
+|---------|-----------|------------|
+| 🪟 **Windows** | `ReportGenerator-1.0.0.exe` | Windows 10+ |
+| 🐧 **Linux** | `reportgenerator_1.0.0_amd64.deb` | Ubuntu/Debian |
+| 🍎 **macOS** | `ReportGenerator-1.0.0.dmg` | macOS 11+ |
+| ☕ **Multiplataforma** | `ReportGenerator-1.0.0-fat.jar` | Java 17+ |
+
+**Ventajas de los instaladores nativos:**
+- ✅ **No requieren Java instalado** (JRE incluido)
+- ✅ Instalación con un clic
+- ✅ Accesos directos automáticos
+- ✅ Integración con el sistema operativo
+
+#### Instrucciones de instalación:
+
+**Windows**: Ejecuta el `.exe` y sigue el asistente de instalación
+
+**Linux**: 
+```bash
+sudo dpkg -i reportgenerator_1.0.0_amd64.deb
+```
+
+**macOS**: Abre el `.dmg` y arrastra la app a la carpeta Aplicaciones
+
+**JAR** (requiere Java 17+):
+```bash
+java -jar ReportGenerator-1.0.0-fat.jar
+```
+
+## Compilar desde el Código Fuente
 
 ### Requisitos Previos
 
-- **Java JDK 25** o superior
+- **Java JDK 21** o superior
 - **Maven 3.6+**
 - Sistema operativo: Windows, macOS o Linux
 
@@ -149,10 +184,46 @@ ReportGenerator/
 
 ## Documentación Adicional
 
-- [Guía de Uso Completa](docs/USAGE_GUIDE.md) - Instrucciones detalladas
-- [Formato CSV](docs/CSV_FORMAT.md) - Especificación del formato de datos
-- [Bibliotecas y Licencias](docs/LIBRARIES.md) - Información de dependencias
-- [Tutorial PDF](docs/TUTORIAL_PDF.md) - Tutorial paso a paso para generar PDFs
+- **[Guía de Uso Completa](docs/USAGE_GUIDE.md)** - Instrucciones detalladas
+- **[Formato CSV](docs/CSV_FORMAT.md)** - Especificación del formato de datos
+- **[Bibliotecas y Licencias](docs/LIBRARIES.md)** - Información de dependencias
+- **[Tutorial PDF](docs/TUTORIAL_PDF.md)** - Tutorial paso a paso para generar PDFs
+- **[GitHub Actions](docs/GITHUB_ACTIONS.md)** - Cómo se generan los instaladores automáticamente
+- **[Guía de Instaladores](docs/INSTALLERS_GUIDE.md)** - Crear instaladores localmente
+
+## Generar Instaladores
+
+### Localmente
+
+```bash
+# macOS/Linux
+./create-installer.sh
+
+# Generará:
+# - target/ReportGenerator-1.0.0-fat.jar (multiplataforma)
+# - target/dist/ReportGenerator-1.0.0.dmg (macOS)
+```
+
+### Con GitHub Actions (Multi-plataforma)
+
+Los instaladores para **Windows, Linux y macOS** se generan automáticamente:
+
+1. **Crear un tag:**
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **GitHub Actions compilará automáticamente:**
+   - ✅ `ReportGenerator-1.0.0.exe` (Windows)
+   - ✅ `reportgenerator_1.0.0_amd64.deb` (Linux)
+   - ✅ `ReportGenerator-1.0.0.dmg` (macOS)
+   - ✅ `ReportGenerator-1.0.0-fat.jar` (Multiplataforma)
+
+3. **Descargar desde Releases:**
+   - https://github.com/alvarocrsc/ReportGenerator/releases
+
+Ver [GitHub Actions](docs/GITHUB_ACTIONS.md) para más detalles.
 
 ## Autor
 

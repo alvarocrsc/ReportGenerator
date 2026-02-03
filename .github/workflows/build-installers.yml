@@ -1,0 +1,227 @@
+name: Build Multi-Platform Installers
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-jar:
+    name: Build JAR (Cross-platform)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build JAR with dependencies
+        run: mvn clean package
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-executable
+          path: target/ReportGenerator-*-fat.jar
+          retention-days: 30
+
+  build-windows:
+    name: Build Windows Installer (.exe)
+    runs-on: windows-latest
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build JAR
+        run: mvn clean package
+
+      - name: Create output directory
+        run: mkdir -p target/dist
+        shell: bash
+
+      - name: Build Windows Installer
+        run: |
+          jpackage `
+            --type exe `
+            --name "ReportGenerator" `
+            --app-version "1.0.0" `
+            --vendor "Alvaro" `
+            --description "Gestor de Clientes con Informes PDF" `
+            --input target `
+            --dest target/dist `
+            --main-jar ReportGenerator-1.0.0-fat.jar `
+            --main-class com.example.reportgenerator.Launcher `
+            --java-options "-Dfile.encoding=UTF-8" `
+            --win-dir-chooser `
+            --win-menu `
+            --win-shortcut `
+            --verbose
+        shell: powershell
+
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: target/dist/*.exe
+          retention-days: 30
+
+  build-linux:
+    name: Build Linux Installer (.deb)
+    runs-on: ubuntu-latest
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build JAR
+        run: mvn clean package
+
+      - name: Create output directory
+        run: mkdir -p target/dist
+
+      - name: Build Linux Installer
+        run: |
+          jpackage \
+            --type deb \
+            --name "reportgenerator" \
+            --app-version "1.0.0" \
+            --vendor "Alvaro" \
+            --description "Gestor de Clientes con Informes PDF" \
+            --input target \
+            --dest target/dist \
+            --main-jar ReportGenerator-1.0.0-fat.jar \
+            --main-class com.example.reportgenerator.Launcher \
+            --java-options "-Dfile.encoding=UTF-8" \
+            --linux-shortcut \
+            --verbose
+
+      - name: Upload Linux Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-installer
+          path: target/dist/*.deb
+          retention-days: 30
+
+  build-macos:
+    name: Build macOS Installer (.dmg)
+    runs-on: macos-latest
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build JAR
+        run: mvn clean package
+
+      - name: Create output directory
+        run: mkdir -p target/dist
+
+      - name: Build macOS Installer
+        run: |
+          jpackage \
+            --type dmg \
+            --name "ReportGenerator" \
+            --app-version "1.0.0" \
+            --vendor "Alvaro" \
+            --description "Gestor de Clientes con Informes PDF" \
+            --input target \
+            --dest target/dist \
+            --main-jar ReportGenerator-1.0.0-fat.jar \
+            --main-class com.example.reportgenerator.Launcher \
+            --java-options "-Dfile.encoding=UTF-8" \
+            --verbose
+
+      - name: Upload macOS Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-installer
+          path: target/dist/*.dmg
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-jar, build-windows, build-linux, build-macos]
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display structure
+        run: ls -R artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/jar-executable/*
+            artifacts/windows-installer/*
+            artifacts/linux-installer/*
+            artifacts/macos-installer/*
+          body: |
+            ## ReportGenerator v${{ github.ref_name }}
+            
+            Gestor de Clientes con generación de informes PDF
+            
+            ### Instaladores disponibles:
+            
+            - **Windows**: `ReportGenerator-1.0.0.exe` - Instalador con JRE incluido
+            - **Linux**: `reportgenerator_1.0.0_amd64.deb` - Paquete Debian
+            - **macOS**: `ReportGenerator-1.0.0.dmg` - Imagen de disco
+            - **Multiplataforma**: `ReportGenerator-1.0.0-fat.jar` - Requiere Java 17+
+            
+            ### Instalación:
+            
+            **Windows**: Ejecuta el archivo .exe y sigue el asistente
+            
+            **Linux**: 
+            ```bash
+            sudo dpkg -i reportgenerator_1.0.0_amd64.deb
+            ```
+            
+            **macOS**: Abre el .dmg y arrastra la aplicación a la carpeta Aplicaciones
+            
+            **JAR**: 
+            ```bash
+            java -jar ReportGenerator-1.0.0-fat.jar
+            ```
+            
+            ### Características:
+            - Gestión de clientes desde archivo CSV
+            - Generación de informes PDF con gráficos
+            - Filtrado de datos por fecha
+            - Exportación de informes
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
