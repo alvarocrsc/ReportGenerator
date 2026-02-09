@@ -108,6 +108,7 @@ public class PDFExporter {
                     page = new PDPage(PDRectangle.A4);
                     document.addPage(page);
                     contentStream = new PDPageContentStream(document, page);
+                    contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), FONT_SIZE_NORMAL);
                     yPosition = page.getMediaBox().getHeight() - MARGIN;
                 }
                 
