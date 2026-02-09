@@ -45,10 +45,10 @@ Descarga el instalador para tu sistema operativo desde [GitHub Releases](https:/
 
 | Sistema | Instalador | Requisitos |
 |---------|-----------|------------|
-| 🪟 **Windows** | `ReportGenerator-1.0.0.exe` | Windows 10+ |
-| 🐧 **Linux** | `reportgenerator_1.0.0_amd64.deb` | Ubuntu/Debian |
-| 🍎 **macOS** | `ReportGenerator-1.0.0.dmg` | macOS 11+ |
-| ☕ **Multiplataforma** | `ReportGenerator-1.0.0-fat.jar` | Java 17+ |
+| **Windows** | `ReportGenerator-1.0.0.exe` | Windows 10+ |
+| **Linux** | `reportgenerator_1.0.0_amd64.deb` | Ubuntu/Debian |
+| **macOS** | `ReportGenerator-1.0.0.dmg` | macOS 11+ |
+| **Multiplataforma** | `ReportGenerator-1.0.0-fat.jar` | Java 17+ |
 
 **Ventajas de los instaladores nativos:**
 - ✅ **No requieren Java instalado** (JRE incluido)
@@ -188,21 +188,9 @@ ReportGenerator/
 - **[Formato CSV](docs/CSV_FORMAT.md)** - Especificación del formato de datos
 - **[Bibliotecas y Licencias](docs/LIBRARIES.md)** - Información de dependencias
 - **[Tutorial PDF](docs/TUTORIAL_PDF.md)** - Tutorial paso a paso para generar PDFs
-- **[GitHub Actions](docs/GITHUB_ACTIONS.md)** - Cómo se generan los instaladores automáticamente
 - **[Guía de Instaladores](docs/INSTALLERS_GUIDE.md)** - Crear instaladores localmente
 
 ## Generar Instaladores
-
-### Localmente
-
-```bash
-# macOS/Linux
-./create-installer.sh
-
-# Generará:
-# - target/ReportGenerator-1.0.0-fat.jar (multiplataforma)
-# - target/dist/ReportGenerator-1.0.0.dmg (macOS)
-```
 
 ### Con GitHub Actions (Multi-plataforma)
 
@@ -215,15 +203,13 @@ Los instaladores para **Windows, Linux y macOS** se generan automáticamente:
    ```
 
 2. **GitHub Actions compilará automáticamente:**
-   - ✅ `ReportGenerator-1.0.0.exe` (Windows)
-   - ✅ `reportgenerator_1.0.0_amd64.deb` (Linux)
-   - ✅ `ReportGenerator-1.0.0.dmg` (macOS)
-   - ✅ `ReportGenerator-1.0.0-fat.jar` (Multiplataforma)
+   - `ReportGenerator-1.0.0.exe` (Windows)
+   - `reportgenerator_1.0.0_amd64.deb` (Linux)
+   - `ReportGenerator-1.0.0.dmg` (macOS)
+   - `ReportGenerator-1.0.0-fat.jar` (Multiplataforma)
 
 3. **Descargar desde Releases:**
    - https://github.com/alvarocrsc/ReportGenerator/releases
-
-Ver [GitHub Actions](docs/GITHUB_ACTIONS.md) para más detalles.
 
 ## Autor
 
